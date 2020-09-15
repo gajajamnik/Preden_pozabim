@@ -13,13 +13,25 @@ class ZbirkaPredavanj:
 
     #ob vnosu predavanje doda v zbirko
     def dodaj_predavanje(self, predmet, tema):
+        datum_dodajanja = date.today()
+        dan = datum_dodajanja.day
+        mesec = datum_dodajanja.month
+        leto = datum_dodajanja.year
         novo_predavanje = Predavanje(predmet, tema)
+        #nastavi zadnji in naslednji datum
+        novo_predavanje.zadnji_datum = date(leto, mesec, dan)
+        novo_predavanje.naslednji_datum = date(leto, mesec, dan) + timedelta(days=1)
+        #doda predavanje v zbirko
         self.predavanja.append(novo_predavanje)
 
     #ce je datum ustrezen predavanje iz zbirke prestavi doda v ponavljanja
     def dodaj_v_ponavljanja(self):
+        danes = date.today()
+        dan = danes.day
+        mesec = danes.month
+        leto = danes.year
         for predavanje in self.predavanja:
-            if date.today >= predavanje.naslednji_datum:
+            if date(leto, mesec, dan) >= predavanje.naslednji_datum:
                 self.ponavljanja.append(predavanje)
             else:
                 pass
@@ -51,8 +63,8 @@ class Predavanje:
     def __init__(self, predmet, tema):
         self.predmet = predmet
         self.tema = tema
-        self.zadnji_datum = date.today()  #ob vpisu predavanja se ta datum nastavi na dan vnosa
-        self.naslednji_datum = date.today() + timedelta(days=1) #ob vpisu predavanja se to nastavi na en dan po vnosu
+        self.zadnji_datum = None  #ob vpisu predavanja se ta datum nastavi na dan vnosa
+        self.naslednji_datum = None #ob vpisu predavanja se to nastavi na en dan po vnosu
         self.ponovitve = []
         self.stopnja = len(self.ponovitve) + 1
         
