@@ -79,7 +79,7 @@ class Predavanje:
         #doda ponovitev v seznam ponovitev
         self.ponovitve.append(Ponovi(uspesnost))
         #izracuna novi interval
-        trenutni_interval = self.izracunaj_trenutni_interval
+        trenutni_interval = self.izracunaj_trenutni_interval()
         stopnja = len(self.ponovitve)
         interval = novi_interval(trenutni_interval, stopnja, uspesnost)
         #ponovno definiramo zadnji in naslednji datum ponovitve
@@ -96,10 +96,21 @@ class Ponovi:
 
 
 
-zbirka = ZbirkaPredavanj()
+#zbirka = ZbirkaPredavanj()
 
-zbirka.dodaj_predavanje('analiza', 'vrste')
+#zbirka.dodaj_predavanje('analiza', 'vrste')
 
-pred = zbirka.predavanja[0]
+#pred = zbirka.predavanja[0]
 
-pred.ponovi_predavanje(3)
+#pred.zadnji_datum = date(2020, 9, 14)
+#pred.naslednji_datum = date(2020, 9, 15)
+
+#zbirka.dodaj_v_ponavljanja()
+
+#zbirka.ponovi_iz_ponavljanja(0, 3)
+
+#pred.izracunaj_trenutni_interval()
+
+#pred.ponovi_predavanje(3)
+
+#pred.ponovi_predavanje(4)
