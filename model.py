@@ -51,12 +51,13 @@ def nov_faktor(uspesnost):
 
 #izracuna nov interval glede na stari interval, stopnjo in uspesnost
 def novi_interval(trenutni_interval, stopnja, uspesnost):
-    if stopnja == 1:
+    if stopnja == 0:
         pass
-    elif stopnja == 2:
+    elif stopnja == 1:
         return 6
     else:
         return trenutni_interval * nov_faktor(uspesnost)
+
 
 
 class Predavanje:
@@ -66,7 +67,6 @@ class Predavanje:
         self.zadnji_datum = None  #ob vpisu predavanja se ta datum nastavi na dan vnosa
         self.naslednji_datum = None #ob vpisu predavanja se to nastavi na en dan po vnosu
         self.ponovitve = []
-        self.stopnja = len(self.ponovitve) + 1
         
     #izracuna razliko med zadnjim in novim ponavljanjem (potrebujemo za izracun naslednjega intervala)
     def izracunaj_trenutni_interval(self):
@@ -80,7 +80,7 @@ class Predavanje:
         self.ponovitve.append(Ponovi(uspesnost))
         #izracuna novi interval
         trenutni_interval = self.izracunaj_trenutni_interval
-        stopnja = self.stopnja
+        stopnja = len(self.ponovitve)
         interval = novi_interval(trenutni_interval, stopnja, uspesnost)
         #ponovno definiramo zadnji in naslednji datum ponovitve
         self.zadnji_datum = self.naslednji_datum
@@ -96,6 +96,10 @@ class Ponovi:
 
 
 
-#zbirka = ZbirkaPredavanj()
+zbirka = ZbirkaPredavanj()
 
-#zbirka.dodaj_predavanje('analiza', 'vrste')
+zbirka.dodaj_predavanje('analiza', 'vrste')
+
+pred = zbirka.predavanja[0]
+
+pred.ponovi_predavanje(3)
