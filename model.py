@@ -54,7 +54,7 @@ class Predavanje:
         self.zadnji_datum = date.today()  #ob vpisu predavanja se ta datum nastavi na dan vnosa
         self.naslednji_datum = date.today() + timedelta(days=1) #ob vpisu predavanja se to nastavi na en dan po vnosu
         self.ponovitve = []
-        self.stopnja = 1
+        self.stopnja = len(self.ponovitve) + 1
         
     #izracuna razliko med zadnjim in novim ponavljanjem (potrebujemo za izracun naslednjega intervala)
     def izracunaj_trenutni_interval(self):
@@ -64,17 +64,16 @@ class Predavanje:
 
 
     def ponovi_predavanje(self, uspesnost):
+        #doda ponovitev v seznam ponovitev
         self.ponovitve.append(Ponovi(uspesnost))
+        #izracuna novi interval
         trenutni_interval = self.izracunaj_trenutni_interval
+        stopnja = self.stopnja
+        interval = novi_interval(trenutni_interval, stopnja, uspesnost)
+        #ponovno definiramo zadnji in naslednji datum ponovitve
+        self.zadnji_datum = self.naslednji_datum
+        self.naslednji_datum = self.zadnji_datum + timedelta(days=interval)
         
-
-        self.stopnja += 1
-        #ob ponovitvi_moramo se spremenit self.zadnji_datum iin self.naslednji_datum
-        
-
-    
-
-
 
 #ob vsaki ponovitvi dodamo uspenost ponovitve po lestvici 0-5
 class Ponovi:
