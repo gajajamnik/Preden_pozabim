@@ -1,13 +1,28 @@
 from datetime import date
 from datetime import timedelta
 
+import json
+
 class Uporabnik:
-    def __init__(self, uporabnisko_ime, geslo):
+    def __init__(self, uporabnisko_ime, geslo, zbirka_predavanj):
         self.uporabnisko_ime = uporabnisko_ime
         self.geslo = geslo
+        self.zbirka_predavanj = zbirka_predavanj
+
+    def preveri_geslo(self, geslo):
+        if self.geslo != geslo:
+            raise ValueError('Napačno geslo!')
+
+    #def sharni_stanje(self, ime_datoteke):
+    #    slovar = {
+    #        'uporabnisko_ime': self.uporabnisko_ime,
+    #        'geslo': self.geslo
+    #        'zbirka_predavanj': self.zbirka_predavanj
+    #    }
 
 class ZbirkaPredavanj:
     def __init__(self):
+        #self.datoteka = datoteka
         self.predavanja = []
         self.ponavljanja = []
 
