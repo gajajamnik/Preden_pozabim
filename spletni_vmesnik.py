@@ -12,4 +12,5 @@ zbirka.dodaj_predavanje('analiza', 'vrste')
 def osnovna_stran():
     return bottle.template('osnovna_stran.tpl')
 
+
 bottle.run(debug=True, reloader=True)

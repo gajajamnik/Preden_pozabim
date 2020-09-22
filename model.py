@@ -58,6 +58,8 @@ class ZbirkaPredavanj:
         self.ponavljanja.remove(ponovljeno_predavanje)
         #MANJKA BELEZENJE INDEKSA
 
+    
+
 
 #izracuna faktor glede na uspesnost
 def nov_faktor(uspesnost):
