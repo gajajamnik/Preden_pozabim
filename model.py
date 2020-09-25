@@ -26,6 +26,12 @@ class ZbirkaPredavanj:
         self.predavanja = []
         self.ponavljanja = []
 
+    def v_slovar(self):
+        return {
+            'predavanja': [predavanje.v_slovar() for predavanje in self.predavanja],
+            'ponavljanja': [predavanje.v_slovar() for predavanje in self.ponavljanja]
+        }
+
     #ob vnosu predavanje doda v zbirko
     def dodaj_predavanje(self, predmet, tema):
         datum_dodajanja = date.today()
@@ -38,6 +44,15 @@ class ZbirkaPredavanj:
         novo_predavanje.naslednji_datum = date(leto, mesec, dan) + timedelta(days=1)
         #doda predavanje v zbirko
         self.predavanja.append(novo_predavanje)
+
+    #odstrani predavanje iz zbirke
+    def odstrani_predavanje(self, indeks_predavanja):
+        if indeks_predavanja <= len(self.predavanja):
+            odstranjeno = self.predavanja[indeks_predavanja]
+            self.predavanja.remove(odstranjeno)
+            if odstranjeno in self.ponavljanja:
+                self.ponavljanja.remove(odstranjeno)
+
 
     #ce je datum ustrezen predavanje iz zbirke prestavi doda v ponavljanja
     def dodaj_v_ponavljanja(self):
@@ -55,12 +70,13 @@ class ZbirkaPredavanj:
     def ponovi_iz_ponavljanja(self, indeks_predavanja, uspesnost):
         ponovljeno_predavanje = self.ponavljanja[indeks_predavanja]
         ponovljeno_predavanje.ponovi_predavanje(uspesnost)
+        nov_datum = ponovljeno_predavanje.naslednji_datum
         self.ponavljanja.remove(ponovljeno_predavanje)
-        #MANJKA BELEZENJE INDEKSA
+        return nov_datum
 
     
 
-
+#POMOZNI FUNKCIJI ZA IZRACUN NASLEDNJE PONOVITVE
 #izracuna faktor glede na uspesnost
 def nov_faktor(uspesnost):
     f = 2.5
@@ -84,6 +100,14 @@ class Predavanje:
         self.zadnji_datum = None  #ob vpisu predavanja se ta datum nastavi na dan vnosa
         self.naslednji_datum = None #ob vpisu predavanja se to nastavi na en dan po vnosu
         self.ponovitve = []
+
+    def v_slovar(self):
+        return {
+            'predmet': self.predmet,
+            'tema': self.tema,
+            'zadnji datum': str(self.zadnji_datum),
+            'naslednji datum': str(self.naslednji_datum)
+        }
         
     #izracuna razliko med zadnjim in novim ponavljanjem (potrebujemo za izracun naslednjega intervala)
     def izracunaj_trenutni_interval(self):
