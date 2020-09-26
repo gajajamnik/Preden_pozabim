@@ -63,7 +63,7 @@ def glavni_meni():
         try:
             moznosti = [
                 ('dodal predavanje', dodaj_predavanje),
-                ('odstranil predavanje', odstrani_predavanje),2
+                ('odstranil predavanje', odstrani_predavanje),
                 ('pogledal danasnja ponavljanja', danasnja_ponavljanja),
                 ('pogledal vsa predavanja', vsa_predavanja),
             ]
