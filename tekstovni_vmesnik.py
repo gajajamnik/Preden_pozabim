@@ -13,8 +13,18 @@ zbirka.predavanja[0].naslednji_datum = date(2020, 9, 21)
 
 zbirka.dodaj_v_ponavljanja()
 
-# POMOŽNE FUNKCIJE ZA VNOS
+LOGO = '''
+  ___            _                              _    _       
+ | _ \_ _ ___ __| |___ _ _    _ __  ___ _____ _| |__(_)_ __  
+ |  _/ '_/ -_) _` / -_) ' \  | '_ \/ _ \_ / _` | '_ \ | '  \ 
+ |_| |_| \___\__,_\___|_||_| | .__/\___/__\__,_|_.__/_|_|_|_|
+                             |_|                             
+ '''
+DATOTEKA_S_STANJEM = 'stanje.json'
 
+
+
+# POMOŽNE FUNKCIJE ZA VNOS
 
 def dobro(niz):
     print(f'\033[1;94m{niz}\033[0m')
@@ -56,6 +66,7 @@ def izberi(seznam):
 
 
 def glavni_meni():
+    print(LOGO)
     krepko('Pozdravljeni v programu PREDEN POZABIM!')
     print('Za izhod pritisnite Ctrl-C.')
     print
@@ -96,36 +107,32 @@ def danasnja_ponavljanja():
         dobro('Danes nimas nic za ponavljat. Uživaj ;)')
     else:
         print('Katero predavanje želite ponoviti?')
-        while True:
-            try:
-                ponovljeno = izberi([(prikaz_predavanja(predavanje), predavanje) for predavanje in zbirka.ponavljanja])
-                ponovi_predavanje(ponovljeno)
-            except ValueError as e:
-                slabo(e.args[0])
+        try:
+            ponovljeno = izberi([(prikaz_predavanja(predavanje), predavanje) for predavanje in zbirka.ponavljanja])
+            ponovi_predavanje(ponovljeno)
+        except ValueError as e:
+            slabo(e.args[0])
 
 def ponovi_predavanje(predavanje):
     print('Oceni uspešnost ponovitve od 0 do 5')
     izbira = input('> ')
-    indeks = zbirka.ponavljanja.index(predavanje)
     uspesnost = int(izbira)
-    nov_datum = zbirka.ponovi_iz_ponavljanja(indeks, uspesnost)
+    nov_datum = zbirka.ponovi_iz_ponavljanja(predavanje, uspesnost)
     dobro('Uspešno ste ponovili predavanje. Naslednji datum ponovitve je {}'.format(nov_datum))
-    glavni_meni
 
 def vsa_predavanja():
     if zbirka.predavanja == []:
         print('Zbirka predavanj je prazna.')
-        while True:
-            try:
-                moznosti = [
-                    ('dodal predavanje', dodaj_predavanje),
-                    ('nazaj na osnovni meni', glavni_meni),
-                ]
-                print('Kaj bi rad naredil?')
-                izbira = izberi(moznosti)
-                izbira()
-            except ValueError as e:
-                slabo(e.args[0])
+        try:
+            moznosti = [
+                ('dodal predavanje', dodaj_predavanje),
+                ('nazaj na osnovni meni', glavni_meni),
+            ]
+            print('Kaj bi rad naredil?')
+            izbira = izberi(moznosti)
+            izbira()
+        except ValueError as e:
+            slabo(e.args[0])
     else:
         for predavanje in zbirka.predavanja:
             print(prikaz_predavanja(predavanje))

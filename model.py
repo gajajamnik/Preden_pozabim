@@ -69,12 +69,14 @@ class ZbirkaPredavanj:
 
     #iz seznama ponavljanja izbere(INDEKS) predavanje, na njem opravi ponovitev in ga odstrani iz seznama ponavljanja
     #funkcija vraca nov datum ponavljanja
-    def ponovi_iz_ponavljanja(self, indeks_predavanja, uspesnost):
-        ponovljeno_predavanje = self.ponavljanja[indeks_predavanja]
-        ponovljeno_predavanje.ponovi_predavanje(uspesnost)
-        nov_datum = ponovljeno_predavanje.naslednji_datum
-        self.ponavljanja.remove(ponovljeno_predavanje)
-        return nov_datum
+    def ponovi_iz_ponavljanja(self, predavanje, uspesnost):
+        if 0 <= int(uspesnost) <= 5:
+            predavanje.ponovi_predavanje(uspesnost)
+            nov_datum = predavanje.naslednji_datum
+            self.ponavljanja.remove(predavanje)
+            return nov_datum
+        else:
+            raise ValueError('Uspesnost mora biti podana s stevilko med 0 in 5.')
 
     
 
