@@ -5,7 +5,7 @@ from model import ZbirkaPredavanj, Predavanje, Ponovi, Uporabnik
 zbirka = ZbirkaPredavanj()
 zbirka.dodaj_predavanje('analiza', 'vrste')
 zbirka.dodaj_predavanje('algebra', 'matrike')
-# zbirka.dodaj_predavanje('algebra', 'determinante')
+zbirka.dodaj_predavanje('algebra', 'determinante')
 
 # umetno nastavimo da je bilo predavanje dodano vceraj
 zbirka.predavanja[0].zadnji_datum = date(2020, 9, 20)
@@ -26,6 +26,10 @@ def slabo(niz):
 def krepko(niz):
     print(f'\033[1m{niz}\033[0m')
 
+def prikaz_predavanja(predavanje):
+    return f'''
+    ({predavanje.predmet}, {predavanje.tema}): zadnji datum ponovitve = {predavanje.zadnji_datum}, naslednji datum ponovitve = {predavanje.naslednji_datum}
+    '''
 
 def vnesi_stevilo(pozdrav):
     while True:
@@ -34,7 +38,6 @@ def vnesi_stevilo(pozdrav):
             return int(stevilo)
         except ValueError:
             slabo('Prosim, da vneste število')
-
 
 # funkcija, ki izbira iz seznama
 def izberi(seznam):
@@ -49,6 +52,9 @@ def izberi(seznam):
             slabo(f'Izberi število med 1 in {len(seznam)}')
 
 
+#SESTAVNI DEL UPORABNIŠKEGA UMESNIKA
+
+
 def glavni_meni():
     krepko('Pozdravljeni v programu PREDEN POZABIM!')
     print('Za izhod pritisnite Ctrl-C.')
@@ -57,6 +63,7 @@ def glavni_meni():
         try:
             moznosti = [
                 ('dodal predavanje', dodaj_predavanje),
+                ('odstranil predavanje', odstrani_predavanje),2
                 ('pogledal danasnja ponavljanja', danasnja_ponavljanja),
                 ('pogledal vsa predavanja', vsa_predavanja),
             ]
@@ -71,64 +78,56 @@ def glavni_meni():
             print('Nasvidenje!')
             return
 
-
 def dodaj_predavanje():
     predmet = input('Vnesi ime predmeta> ')
     tema = input('Vnesi temo predavanja> ')
     zbirka.dodaj_predavanje(predmet, tema)
     dobro('Predavanje uspesno dodano')
 
+def odstrani_predavanje():
+    print('Katero predavanje želite odstraniti?')
+    odstranjeno = izberi([(prikaz_predavanja(predavanje), predavanje) for predavanje in zbirka.predavanja])
+    zbirka.predavanja.remove(odstranjeno)
+    zbirka.ponavljanja.remove(odstranjeno)
+
 def danasnja_ponavljanja():
     if zbirka.ponavljanja == []:
         dobro('Danes nimas nic za ponavljat. Uživaj ;)')
     else:
-        izberi_ponavljanje()
+        print('Katero predavanje želite ponoviti?')
+        while True:
+            try:
+                ponovljeno = izberi([(prikaz_predavanja(predavanje), predavanje) for predavanje in zbirka.ponavljanja])
+                ponovi_predavanje(ponovljeno)
+            except ValueError as e:
+                slabo(e.args[0])
 
-def izberi_ponavljanje():
-    seznam = zbirka.ponavljanja
-    print('Katero predavanje želite ponoviti?')
-    for indeks, predavanje in enumerate(seznam, 1):
-        predmet = predavanje.predmet
-        tema = predavanje.tema
-        zadnji_datum = predavanje.zadnji_datum
-        naslednji_datum = predavanje.naslednji_datum
-        print('''
-        {0}) predmet: {1}, tema: {2}, zadnji datum ponavljanja: {3}, naslednji datum ponavljanja: {4}
-        '''.format(indeks, predmet, tema, zadnji_datum, naslednji_datum))
-        print('''
-        {}) Ne želim ponoviti ničesar
-        '''.format(len(seznam) + 1))
-    while True:
-        izbira = input('> ')
-        if 1 <= int(izbira) <= len(seznam) and izbira.isdigit():
-            indeks = int(izbira) - 1
-            ponovi_predavanje(indeks)
-            # print('Uspešno ste ponovili predavanje')
-        elif int(izbira) == len(seznam) + 1 and izbira.isdigit():
-            glavni_meni()
-        else:
-            print('Vnesi število od 1 do {}'.format(len(seznam)))
-
-def ponovi_predavanje(indeks):
+def ponovi_predavanje(predavanje):
     print('Oceni uspešnost ponovitve od 0 do 5')
     izbira = input('> ')
+    indeks = zbirka.ponavljanja.index(predavanje)
     uspesnost = int(izbira)
     nov_datum = zbirka.ponovi_iz_ponavljanja(indeks, uspesnost)
     dobro('Uspešno ste ponovili predavanje. Naslednji datum ponovitve je {}'.format(nov_datum))
-    glavni_meni()
+    glavni_meni
 
 def vsa_predavanja():
-    for predavanje in zbirka.predavanja:
-        predmet = predavanje.predmet
-        tema = predavanje.tema
-        zadnji_datum = predavanje.zadnji_datum
-        naslednji_datum = predavanje.naslednji_datum
-        print('''
-        predmet: {0}
-        tema: {1}
-        zadnji datum ponavljanja: {2}
-        naslednji datum ponavljanja: {3}
-        '''.format(predmet, tema, zadnji_datum, naslednji_datum))
+    if zbirka.predavanja == []:
+        print('Zbirka predavanj je prazna.')
+        while True:
+            try:
+                moznosti = [
+                    ('dodal predavanje', dodaj_predavanje),
+                    ('nazaj na osnovni meni', glavni_meni),
+                ]
+                print('Kaj bi rad naredil?')
+                izbira = izberi(moznosti)
+                izbira()
+            except ValueError as e:
+                slabo(e.args[0])
+    else:
+        for predavanje in zbirka.predavanja:
+            print(prikaz_predavanja(predavanje))
 
 
 glavni_meni()
