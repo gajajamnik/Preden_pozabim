@@ -46,12 +46,13 @@ class ZbirkaPredavanj:
         self.predavanja.append(novo_predavanje)
 
     #odstrani predavanje iz zbirke
-    def odstrani_predavanje(self, indeks_predavanja):
-        if indeks_predavanja <= len(self.predavanja):
-            odstranjeno = self.predavanja[indeks_predavanja]
-            self.predavanja.remove(odstranjeno)
-            if odstranjeno in self.ponavljanja:
-                self.ponavljanja.remove(odstranjeno)
+    def odstrani_predavanje(self, predavanje):
+        if predavanje in self.predavanja:
+            self.predavanja.remove(predavanje)
+        elif predavanje in self.ponavljanja:
+            self.ponavljanja.remove(predavanje)
+        else:
+            raise ValueError('Tega predavanja ni v zbirki')
 
 
     #ce je datum ustrezen predavanje iz zbirke prestavi doda v ponavljanja
@@ -67,6 +68,7 @@ class ZbirkaPredavanj:
                 pass
 
     #iz seznama ponavljanja izbere(INDEKS) predavanje, na njem opravi ponovitev in ga odstrani iz seznama ponavljanja
+    #funkcija vraca nov datum ponavljanja
     def ponovi_iz_ponavljanja(self, indeks_predavanja, uspesnost):
         ponovljeno_predavanje = self.ponavljanja[indeks_predavanja]
         ponovljeno_predavanje.ponovi_predavanje(uspesnost)

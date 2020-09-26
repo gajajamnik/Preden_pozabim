@@ -71,6 +71,8 @@ def glavni_meni():
             izbira = izberi(moznosti)
             print(80 * '=')
             izbira()
+            input('Pritisnite Enter za shranjevanje in vrnitev v osnovni meni...')
+            print()
         except ValueError as e:
             slabo(e.args[0])
         except KeyboardInterrupt:
@@ -87,8 +89,7 @@ def dodaj_predavanje():
 def odstrani_predavanje():
     print('Katero predavanje želite odstraniti?')
     odstranjeno = izberi([(prikaz_predavanja(predavanje), predavanje) for predavanje in zbirka.predavanja])
-    zbirka.predavanja.remove(odstranjeno)
-    zbirka.ponavljanja.remove(odstranjeno)
+    zbirka.odstrani_predavanje(odstranjeno)
 
 def danasnja_ponavljanja():
     if zbirka.ponavljanja == []:
