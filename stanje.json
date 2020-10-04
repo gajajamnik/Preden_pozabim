@@ -1,0 +1,24 @@
+{
+  "predavanja": [
+    {
+      "predmet": "analiza",
+      "tema": "vrste",
+      "zadnji datum": "2020-09-25",
+      "naslednji datum": "2020-09-26"
+    },
+    {
+      "predmet": "algebra",
+      "tema": "matrike",
+      "zadnji datum": "2020-09-14",
+      "naslednji datum": "2020-09-15"
+    }
+  ],
+  "ponavljanja": [
+    {
+      "predmet": "algebra",
+      "tema": "matrike",
+      "zadnji datum": "2020-09-14",
+      "naslednji datum": "2020-09-15"
+    }
+  ]
+}

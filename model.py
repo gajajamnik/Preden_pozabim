@@ -9,6 +9,13 @@ class Uporabnik:
         self.geslo = geslo
         self.zbirka_predavanj = zbirka_predavanj
 
+    def v_slovar(self):
+        return {
+            'uporabnisko_ime': self.uporabnisko_ime,
+            'geslo': self.geslo,
+            'zbirka': self.zbirka.to_dict()
+        }
+
     def preveri_geslo(self, geslo):
         if self.geslo != geslo:
             raise ValueError('Napačno geslo!')
@@ -128,7 +135,11 @@ class Predavanje:
         stopnja = len(self.ponovitve)
         interval = novi_interval(trenutni_interval, stopnja, uspesnost)
         #ponovno definiramo zadnji in naslednji datum ponovitve
-        self.zadnji_datum = self.naslednji_datum
+        datum_dodajanja = date.today()
+        dan = datum_dodajanja.day
+        mesec = datum_dodajanja.month
+        leto = datum_dodajanja.year
+        self.zadnji_datum = date(leto, mesec, dan)
         self.naslednji_datum = self.zadnji_datum + timedelta(days=interval)
         
 
@@ -141,14 +152,14 @@ class Ponovi:
 
 
 
-#zbirka = ZbirkaPredavanj()
+zbirka = ZbirkaPredavanj()
 
-#zbirka.dodaj_predavanje('analiza', 'vrste')
+zbirka.dodaj_predavanje('analiza', 'vrste')
 
-#pred = zbirka.predavanja[0]
+pred = zbirka.predavanja[0]
 
-#pred.zadnji_datum = date(2020, 9, 14)
-#pred.naslednji_datum = date(2020, 9, 15)
+pred.zadnji_datum = date(2020, 9, 14)
+pred.naslednji_datum = date(2020, 9, 15)
 
 #zbirka.dodaj_v_ponavljanja()
 

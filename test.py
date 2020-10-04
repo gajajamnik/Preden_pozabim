@@ -1,3 +1,4 @@
+import json
 from model import Uporabnik, ZbirkaPredavanj, Predavanje, Ponovi
 
 from datetime import date
@@ -21,3 +22,8 @@ zbirka.dodaj_v_ponavljanja()
 #funkcija izracunaj_trenutni_interval dela
 
 #zbirka.ponovi_iz_ponavljanja()
+
+stanje = zbirka.v_slovar()
+
+with open('stanje.json', 'w') as datoteka:
+    json.dump(stanje, datoteka, ensure_ascii=False, indent=2)

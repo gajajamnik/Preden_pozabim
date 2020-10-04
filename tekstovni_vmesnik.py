@@ -103,6 +103,7 @@ def odstrani_predavanje():
     zbirka.odstrani_predavanje(odstranjeno)
 
 def danasnja_ponavljanja():
+    #zbirka.dodaj_v_ponavljanja()
     if zbirka.ponavljanja == []:
         dobro('Danes nimas nic za ponavljat. Uživaj ;)')
     else:
@@ -141,4 +142,4 @@ def vsa_predavanja():
 glavni_meni()
 
 # to moras obvezno zagnat, da se nalozijo denvna ponavljanja
-danasnja_ponavljanja()
+#danasnja_ponavljanja()
