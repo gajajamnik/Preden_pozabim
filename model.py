@@ -1,3 +1,4 @@
+import datetime
 from datetime import date
 from datetime import timedelta
 
@@ -7,25 +8,24 @@ class Uporabnik:
     def __init__(self, uporabnisko_ime, geslo, zbirka_predavanj):
         self.uporabnisko_ime = uporabnisko_ime
         self.geslo = geslo
-        self.zbirka_predavanj = zbirka_predavanj
+        self.zbirka = zbirka_predavanj
 
-    def v_slovar(self):
+    def v_slovar(self, ime_datoteke):
         return {
             'uporabnisko_ime': self.uporabnisko_ime,
             'geslo': self.geslo,
-            'zbirka': self.zbirka.to_dict()
+            'zbirka': self.zbirka.v_slovar()
         }
+    
+    def shrani_stanje(self, ime_datoteke):
+        with open(ime_datoteke, 'w') as datoteka:
+            json.dump(slovar_stanja, datoteka, ensure_ascii=False, indent=4)
 
     def preveri_geslo(self, geslo):
         if self.geslo != geslo:
             raise ValueError('Napačno geslo!')
 
-    #def sharni_stanje(self, ime_datoteke):
-    #    slovar = {
-    #        'uporabnisko_ime': self.uporabnisko_ime,
-    #        'geslo': self.geslo
-    #        'zbirka_predavanj': self.zbirka_predavanj
-    #    }
+
 
 class ZbirkaPredavanj:
     def __init__(self):
@@ -38,6 +38,25 @@ class ZbirkaPredavanj:
             'predavanja': [predavanje.v_slovar() for predavanje in self.predavanja],
             'ponavljanja': [predavanje.v_slovar() for predavanje in self.ponavljanja]
         }
+
+    def shrani_stanje(self, ime_datoteke):
+        with open(ime_datoteke, 'w') as datoteka:
+            json.dump(self.v_slovar(), datoteka, ensure_ascii=False, indent=4)
+
+    @classmethod
+    def iz_slovarja(cls, slovar):
+        self = cls()
+        for predavanje in slovar['predavanja']:
+            self.predavanja.append(Predavanje.iz_slovarja(predavanje))
+        for ponavljanje in slovar['ponavljanja']:
+            self.ponavljanja.append(Predavanje.iz_slovarja(ponavljanje))
+        return self
+
+    @classmethod
+    def nalozi_stanje(cls, ime_datoteke):
+        with open(ime_datoteke) as datoteka:
+            slovar = json.load(datoteka)
+        return cls.iz_slovarja(slovar)
 
     #ob vnosu predavanje doda v zbirko
     def dodaj_predavanje(self, predmet, tema):
@@ -116,10 +135,25 @@ class Predavanje:
         return {
             'predmet': self.predmet,
             'tema': self.tema,
-            'zadnji datum': str(self.zadnji_datum),
-            'naslednji datum': str(self.naslednji_datum)
+            'zadnji_datum': self.zadnji_datum.strftime("%d/%m/%Y"),
+            'naslednji_datum': self.naslednji_datum.strftime("%d/%m/%Y"),
+            'ponovitve': [{
+                'cas_ponovitve': ponovitev.cas_ponovitve.strftime("%d/%m/%Y"),
+                'uspesnost': ponovitev.uspesnost,
+            } for ponovitev in self.ponovitve],
         }
-        
+
+    @classmethod
+    def iz_slovarja(cls, slovar):
+        predmet = slovar['predmet']
+        tema = slovar['tema']
+        self = cls(predmet, tema)
+        self.zadnji_datum = datetime.strptime(slovar['zadnji_datum'], "%d/%m/%Y")
+        self.naslednji_datum = datetime.strptime(slovar['naslednji_datum'], "%d/%m/%Y")
+        for ponovitev in slovar['ponovitve']:
+            self.ponovitve.append(Ponovi.iz_slovarja(ponovitev))
+        return self
+
     #izracuna razliko med zadnjim in novim ponavljanjem (potrebujemo za izracun naslednjega intervala)
     def izracunaj_trenutni_interval(self):
         razlika = self.naslednji_datum - self.zadnji_datum
@@ -148,6 +182,13 @@ class Ponovi:
     def __init__(self, uspesnost):
         self.cas_ponovitve = date.today()
         self.uspesnost = uspesnost
+
+    @classmethod
+    def iz_slovarja(cls, slovar):
+        uspesnost = slovar['uspesnost']
+        self = cls(uspesnost)
+        self.cas_ponovitve = datetime.strptime(slovar['cas_ponovitve'], "%d/%m/%Y")
+        return self
 
 
 
