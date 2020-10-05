@@ -1,5 +1,4 @@
-import datetime
-from datetime import date
+from datetime import *
 from datetime import timedelta
 
 import json
@@ -19,17 +18,23 @@ class Uporabnik:
     
     def shrani_stanje(self, ime_datoteke):
         with open(ime_datoteke, 'w') as datoteka:
-            json.dump(slovar_stanja, datoteka, ensure_ascii=False, indent=4)
+            json.dump(self.v_slovar(), datoteka, ensure_ascii=False, indent=4)
+
+    @classmethod
+    def iz_slovarja(cls, slovar):
+        uporabnisko_ime = slovar['uporabnisko_ime']
+        geslo = slovar['geslo']
+        self = cls(uporabnisko_ime, geslo)
+        self.zbirka = ZbirkaPredavanj.iz_slovarja(slovar['zbirka'])
+        return self
 
     def preveri_geslo(self, geslo):
         if self.geslo != geslo:
             raise ValueError('Napačno geslo!')
 
 
-
 class ZbirkaPredavanj:
     def __init__(self):
-        #self.datoteka = datoteka
         self.predavanja = []
         self.ponavljanja = []
 
@@ -84,14 +89,14 @@ class ZbirkaPredavanj:
     #ce je datum ustrezen predavanje iz zbirke prestavi doda v ponavljanja
     def dodaj_v_ponavljanja(self):
         danes = date.today()
-        dan = danes.day
-        mesec = danes.month
-        leto = danes.year
-        for predavanje in self.predavanja:
-            if date(leto, mesec, dan) >= predavanje.naslednji_datum:
-                self.ponavljanja.append(predavanje)
-            else:
-                pass
+        changes = False
+        vsa_predavanja = self.predavanja
+        for predavanje in vsa_predavanja:
+            if danes >= predavanje.naslednji_datum:
+                if not any(predavanje.v_slovar() == ponavljanje.v_slovar() for ponavljanje in self.ponavljanja):
+                    self.ponavljanja.append(predavanje)
+                    changes = True
+        return changes
 
     #iz seznama ponavljanja izbere(INDEKS) predavanje, na njem opravi ponovitev in ga odstrani iz seznama ponavljanja
     #funkcija vraca nov datum ponavljanja
@@ -168,6 +173,7 @@ class Predavanje:
         trenutni_interval = self.izracunaj_trenutni_interval()
         stopnja = len(self.ponovitve)
         interval = novi_interval(trenutni_interval, stopnja, uspesnost)
+        print(interval)
         #ponovno definiramo zadnji in naslednji datum ponovitve
         datum_dodajanja = date.today()
         dan = datum_dodajanja.day
@@ -202,9 +208,9 @@ pred = zbirka.predavanja[0]
 pred.zadnji_datum = date(2020, 9, 14)
 pred.naslednji_datum = date(2020, 9, 15)
 
-#zbirka.dodaj_v_ponavljanja()
+zbirka.dodaj_v_ponavljanja()
 
-#zbirka.ponovi_iz_ponavljanja(0, 3)
+zbirka.ponovi_iz_ponavljanja(zbirka.ponavljanja[0], 3)
 
 #pred.izracunaj_trenutni_interval()
 
