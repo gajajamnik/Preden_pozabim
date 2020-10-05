@@ -1,17 +1,17 @@
-from datetime import date
+from datetime import *
 from model import ZbirkaPredavanj, Predavanje, Ponovi, Uporabnik
 
 # dokler testiram
-zbirka = ZbirkaPredavanj()
-zbirka.dodaj_predavanje('analiza', 'vrste')
-zbirka.dodaj_predavanje('algebra', 'matrike')
-zbirka.dodaj_predavanje('algebra', 'determinante')
+#zbirka = ZbirkaPredavanj()
+#zbirka.dodaj_predavanje('analiza', 'vrste')
+#zbirka.dodaj_predavanje('algebra', 'matrike')
+#zbirka.dodaj_predavanje('algebra', 'determinante')
 
 # umetno nastavimo da je bilo predavanje dodano vceraj
-zbirka.predavanja[0].zadnji_datum = date(2020, 9, 20)
-zbirka.predavanja[0].naslednji_datum = date(2020, 9, 21)
+#zbirka.predavanja[0].zadnji_datum = date(2020, 9, 20)
+#zbirka.predavanja[0].naslednji_datum = date(2020, 9, 21)
 
-zbirka.dodaj_v_ponavljanja()
+#zbirka.dodaj_v_ponavljanja()
 
 LOGO = '''
   ___            _                              _    _       
@@ -20,8 +20,12 @@ LOGO = '''
  |_| |_| \___\__,_\___|_||_| | .__/\___/__\__,_|_.__/_|_|_|_|
                              |_|                             
  '''
-DATOTEKA_S_STANJEM = 'stanje.json'
+DATOTEKA_S_STANJEM = 'test.json'
 
+try:
+    zbirka = ZbirkaPredavanj.nalozi_stanje(DATOTEKA_S_STANJEM)
+except FileNotFoundError:
+    zbirka = ZbirkaPredavanj()
 
 
 # POMOŽNE FUNKCIJE ZA VNOS
@@ -72,6 +76,7 @@ def glavni_meni():
     print
     while True:
         try:
+            print(80 * '=')
             moznosti = [
                 ('dodal predavanje', dodaj_predavanje),
                 ('odstranil predavanje', odstrani_predavanje),
@@ -83,7 +88,7 @@ def glavni_meni():
             print(80 * '=')
             izbira()
             input('Pritisnite Enter za shranjevanje in vrnitev v osnovni meni...')
-            print()
+            zbirka.shrani_stanje(DATOTEKA_S_STANJEM)
         except ValueError as e:
             slabo(e.args[0])
         except KeyboardInterrupt:
@@ -120,6 +125,7 @@ def ponovi_predavanje(predavanje):
     uspesnost = int(izbira)
     nov_datum = zbirka.ponovi_iz_ponavljanja(predavanje, uspesnost)
     dobro('Uspešno ste ponovili predavanje. Naslednji datum ponovitve je {}'.format(nov_datum))
+
 
 def vsa_predavanja():
     if zbirka.predavanja == []:
