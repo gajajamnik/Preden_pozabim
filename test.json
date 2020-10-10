@@ -1,0 +1,39 @@
+{
+    "predavanja": [
+        {
+            "predmet": "analiza",
+            "tema": "vrste",
+            "zadnji_datum": "26/09/2020",
+            "naslednji_datum": "02/10/2020",
+            "ponovitve": []
+        },
+        {
+            "predmet": "algebra",
+            "tema": "matrike",
+            "zadnji_datum": "05/10/2020",
+            "naslednji_datum": "06/10/2020",
+            "ponovitve": []
+        },
+        {
+            "predmet": "fizika",
+            "tema": "sila",
+            "zadnji_datum": "05/10/2020",
+            "naslednji_datum": "06/10/2020",
+            "ponovitve": []
+        }
+    ],
+    "ponavljanja": [
+        {
+            "predmet": "analiza",
+            "tema": "vrste",
+            "zadnji_datum": "26/09/2020",
+            "naslednji_datum": "02/10/2020",
+            "ponovitve": [
+                {
+                    "cas_ponovitve": "27/09/2020",
+                    "uspesnost": "4"
+                }
+            ]
+        }
+    ]
+}

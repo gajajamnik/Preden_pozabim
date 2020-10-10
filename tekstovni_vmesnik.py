@@ -108,7 +108,7 @@ def odstrani_predavanje():
     zbirka.odstrani_predavanje(odstranjeno)
 
 def danasnja_ponavljanja():
-    #zbirka.dodaj_v_ponavljanja()
+    zbirka.dodaj_v_ponavljanja()
     if zbirka.ponavljanja == []:
         dobro('Danes nimas nic za ponavljat. Uživaj ;)')
     else:
