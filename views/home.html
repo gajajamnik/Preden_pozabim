@@ -1,0 +1,84 @@
+% rebase('base.tpl')
+<div class="container">
+    <div class="row top-buffer">
+        <div class="col-lg-12">
+            <h3>Predavanja</h3>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row top-buffer">
+        <table class="col-lg-12">
+            <tbody>
+                <tr>
+                    <th>Predmet</th>
+                    <th>Poglavje</th>
+                    <th>Datum izvedbe</th>
+                    <th>Datum ponovitve</th>
+                    <th></th>
+                </tr>
+            % for predavanje in zbirka.predavanja:
+                <tr>
+                    <td>{{predavanje.predmet}}</td>
+                    <td>{{predavanje.tema}}</td>
+                    <td>{{predavanje.zadnji_datum}}</td>
+                    <td>{{predavanje.naslednji_datum}}</td>
+                    <form action="/pobrisi/{{predavanje.predmet}}/{{predavanje.tema}}/" method="POST" id="brisi-form">
+                    <td style="text-align: center"><input type="submit" value="Pobrisi predavanje" id="brisi"></td>
+                    </form>
+                </tr> 
+            % end
+                <form action="/dodaj/" method="POST" id="dodaj-form">
+                <tr>
+                    <td><input type="text" name="predmet" id="predmet" placeholder="Predmet"></td>
+                    <td><input type="text" name="tema" id="tema" placeholder="Tema"></td>
+                    <td></td>
+                    <td></td>
+                    <td style="text-align: center"><input type="submit" value="Dodaj predavanje"></td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="container">
+    <div class="row top-buffer">
+        <div class="col-lg-12">
+            <h3>Ponovitve</h3>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row top-buffer">
+        <table class="col-lg-12">
+            <tbody>
+                <tr>
+                    <th>Predmet</th>
+                    <th>Poglavje</th>
+                    <th style="text-align: center">Stevilo ponovitev</th>
+                    <th style="text-align: center">Uspesnost</th>
+                    <th></th>
+                </tr>
+            % for predavanje in zbirka.ponavljanja:
+                <tr>
+                    <td>{{predavanje.predmet}}</td>
+                    <td>{{predavanje.tema}}</td>
+                    <td style="text-align: center">{{len(predavanje.ponovitve)}}</td>
+                    <form action="/oceni/{{predavanje.predmet}}/{{predavanje.tema}}/" method="POST" id="oceni-form">
+                    <td style="display: flex; padding-top: 13px; padding-bottom: 10px; text-align: center">
+                        <input style="height:14px; width:14px; margin: 3px 2px 5px 10px" type="radio" name="ocena" id="ocena1" value="1">1</input>
+                        <input style="height:14px; width:14px; margin: 3px 2px 5px 10px" type="radio" name="ocena" id="ocena2" value="2">2</input>
+                        <input style="height:14px; width:14px; margin: 3px 2px 5px 10px" type="radio" name="ocena" id="ocena3" value="3" checked="checked">3</input>
+                        <input style="height:14px; width:14px; margin: 3px 2px 5px 10px" type="radio" name="ocena" id="ocena4" value="4">4</input>
+                        <input style="height:14px; width:14px; margin: 3px 2px 5px 10px" type="radio" name="ocena" id="ocena5" value="5">5</input>
+                    </td>
+                    <td style="text-align: center">
+                        <input type="submit" value="Oceni">
+                    </td>
+                    </form>
+                </tr>
+            %end
+            </tbody>
+        </table>
+    </div>
+</div>
