@@ -1,4 +1,4 @@
-% rebase('base.tpl')
+% rebase('base.html')
 <div class="container">
     <div class="row top-buffer">
         <div class="col-lg-12">
@@ -24,7 +24,7 @@
                     <td>{{predavanje.zadnji_datum}}</td>
                     <td>{{predavanje.naslednji_datum}}</td>
                     <form action="/pobrisi/{{predavanje.predmet}}/{{predavanje.tema}}/" method="POST" id="brisi-form">
-                    <td style="text-align: center"><input type="submit" value="Pobrisi predavanje" id="brisi"></td>
+                    <td style="text-align: center"><button class="btn btn-outline-danger" type="submit" name="brisi" id="brisi">Pobrisi</button></td>
                     </form>
                 </tr> 
             % end
@@ -34,7 +34,7 @@
                     <td><input type="text" name="tema" id="tema" placeholder="Tema"></td>
                     <td></td>
                     <td></td>
-                    <td style="text-align: center"><input type="submit" value="Dodaj predavanje"></td>
+                    <td style="text-align: center"><button class="btn btn-outline-success" type="submit" name="dodaj" id="dodaj">Dodaj</button></td>
                 </tr>
 
             </tbody>
@@ -73,7 +73,7 @@
                         <input style="height:14px; width:14px; margin: 3px 2px 5px 10px" type="radio" name="ocena" id="ocena5" value="5">5</input>
                     </td>
                     <td style="text-align: center">
-                        <input type="submit" value="Oceni">
+                        <button class="btn btn-outline-secondary" type="submit" name="oceni" id="oceni">Oceni</button>
                     </td>
                     </form>
                 </tr>
