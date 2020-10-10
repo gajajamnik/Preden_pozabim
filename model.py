@@ -73,7 +73,10 @@ class ZbirkaPredavanj:
         #nastavi zadnji in naslednji datum
         novo_predavanje.zadnji_datum = date(leto, mesec, dan)
         novo_predavanje.naslednji_datum = date(leto, mesec, dan) + timedelta(days=1)
-        #doda predavanje v zbirko
+        #doda predavanje v zbirko in preveri da predavanja z takim imenom(kombinacija predmeta in teme) še ni v zbirki
+        for predavanje in self.predavanja:
+            if predavanje.predmet == predmet and predavanje.tema == tema:
+                raise ValueError('Predavanje s takim imenom že obstaja!')
         self.predavanja.append(novo_predavanje)
 
     #odstrani predavanje iz zbirke
@@ -195,25 +198,3 @@ class Ponovi:
         self = cls(uspesnost)
         self.cas_ponovitve = datetime.strptime(slovar['cas_ponovitve'], "%d/%m/%Y")
         return self
-
-
-
-
-zbirka = ZbirkaPredavanj()
-
-zbirka.dodaj_predavanje('analiza', 'vrste')
-
-pred = zbirka.predavanja[0]
-
-pred.zadnji_datum = date(2020, 9, 14)
-pred.naslednji_datum = date(2020, 9, 15)
-
-zbirka.dodaj_v_ponavljanja()
-
-zbirka.ponovi_iz_ponavljanja(zbirka.ponavljanja[0], 3)
-
-#pred.izracunaj_trenutni_interval()
-
-#pred.ponovi_predavanje(3)
-
-#pred.ponovi_predavanje(4)
