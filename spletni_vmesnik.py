@@ -16,8 +16,8 @@ def home():
 
 @bottle.post('/dodaj/')
 def dodaj():
-    predmet = bottle.request.forms['predmet']
-    tema = bottle.request.forms['tema']
+    predmet = bottle.request.forms.getunicode('predmet')
+    tema = bottle.request.forms.getunicode('tema')
     zbirka.dodaj_predavanje(predmet, tema)
     bottle.redirect('/')
 
@@ -27,7 +27,7 @@ def pobrisi(predmet, tema):
     bottle.redirect('/')
 
 @bottle.post('/oceni/<predmet>/<tema>/')
-def oceni():
+def oceni(predmet, tema):
     uspesnost = bottle.request.forms['ocena']
     zbirka.ponovi_iz_ponavljanja(predmet, tema, uspesnost)
     bottle.redirect('/')
