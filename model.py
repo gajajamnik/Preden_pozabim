@@ -31,6 +31,8 @@ class Uporabnik:
     def preveri_geslo(self, geslo):
         if self.geslo != geslo:
             raise ValueError('Napačno geslo!')
+        else:
+            return True
 
 
 class ZbirkaPredavanj:
@@ -80,13 +82,17 @@ class ZbirkaPredavanj:
         self.predavanja.append(novo_predavanje)
 
     #odstrani predavanje iz zbirke
-    def odstrani_predavanje(self, predavanje):
-        if predavanje in self.predavanja:
-            self.predavanja.remove(predavanje)
-        elif predavanje in self.ponavljanja:
-            self.ponavljanja.remove(predavanje)
-        else:
-            raise ValueError('Tega predavanja ni v zbirki')
+    def odstrani_predavanje(self, predmet, tema):
+        for i, pred in enumerate(self.predavanja):
+            if pred.predmet == predmet and pred.tema == tema:
+                predavanje_indeks = i
+        for i, pred in enumerate(self.ponavljanja):
+            if pred.predmet == predmet and pred.tema == tema:
+                ponavljanje_indeks = i
+        #predavanje_index = next((i for i, predavanje in enumerate(self.predavanja) if predavanje.predmet == predmet and predavanje.tema == tema), None)
+        #ponavljanje_index = next((i for i, predavanje in enumerate(self.ponavljanja) if predavanje.predmet == predmet and predavanje.tema == tema), None)
+        del self.predavanja[predavanje_indeks]
+        del self.ponavljanja[ponavljanje_indeks]
 
 
     #ce je datum ustrezen predavanje iz zbirke prestavi doda v ponavljanja
@@ -103,11 +109,20 @@ class ZbirkaPredavanj:
 
     #iz seznama ponavljanja izbere(INDEKS) predavanje, na njem opravi ponovitev in ga odstrani iz seznama ponavljanja
     #funkcija vraca nov datum ponavljanja
-    def ponovi_iz_ponavljanja(self, predavanje, uspesnost):
+    def ponovi_iz_ponavljanja(self, predmet, tema, uspesnost):
+        for i, pred in enumerate(self.predavanja):
+            if pred.predmet == predmet and pred.tema == tema:
+                predavanje_indeks = i
+        for i, pred in enumerate(self.ponavljanja):
+            if pred.predmet == predmet and pred.tema == tema:
+                ponavljanje_indeks = i
+        ponovljeno_predavanje = self.ponavljanja[ponavljanje_indeks]
         if 0 <= int(uspesnost) <= 5:
-            predavanje.ponovi_predavanje(uspesnost)
-            nov_datum = predavanje.naslednji_datum
-            self.ponavljanja.remove(predavanje)
+            ponovljeno_predavanje.ponovi_predavanje(uspesnost)
+            nov_datum = ponovljeno_predavanje.naslednji_datum
+            self.ponavljanja.pop(ponavljanje_indeks)
+            self.predavanja.pop(predavanje_indeks)
+            self.predavanja.append(ponovljeno_predavanje)
             return nov_datum
         else:
             raise ValueError('Uspesnost mora biti podana s stevilko med 0 in 5.')
@@ -198,3 +213,5 @@ class Ponovi:
         self = cls(uspesnost)
         self.cas_ponovitve = datetime.strptime(slovar['cas_ponovitve'], "%d/%m/%Y")
         return self
+
+
