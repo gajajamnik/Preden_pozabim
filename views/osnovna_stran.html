@@ -1,0 +1,24 @@
+% rebase('base.tpl')
+
+<h1><pre>
+'''
+  ___            _                              _    _       
+ | _ \_ _ ___ __| |___ _ _    _ __  ___ _____ _| |__(_)_ __  
+ |  _/ '_/ -_) _` / -_) ' \  | '_ \/ _ \_ / _` | '_ \ | '  \ 
+ |_| |_| \___\__,_\___|_||_| | .__/\___/__\__,_|_.__/_|_|_|_|
+                             |_|                             
+ '''
+ <pre><h1>
+
+ <h1>Zbirka predavanj<h1>
+<ul>
+  % for predavanje in zbirka.predavanja:
+  <li>{{predavanje.predmet}} : {{predavanje.tema}} <li>
+  %end
+<ul>
+
+<form action="/dodaj/" method="POST">
+  Ime predmeta: <input type="text" name="predmet">
+  Tema predmeta: <input type="text" name="tema">
+  <input type="submit" value="Dodaj predavanje">
+</form>
