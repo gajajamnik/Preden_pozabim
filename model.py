@@ -153,8 +153,8 @@ class Predavanje:
         predmet = slovar['predmet']
         tema = slovar['tema']
         self = cls(predmet, tema)
-        self.zadnji_datum = datetime.strptime(slovar['zadnji_datum'], "%d/%m/%Y")
-        self.naslednji_datum = datetime.strptime(slovar['naslednji_datum'], "%d/%m/%Y")
+        self.zadnji_datum = datetime.strptime(slovar['zadnji_datum'], "%d/%m/%Y").date()
+        self.naslednji_datum = datetime.strptime(slovar['naslednji_datum'], "%d/%m/%Y").date()
         for ponovitev in slovar['ponovitve']:
             self.ponovitve.append(Ponovi.iz_slovarja(ponovitev))
         return self
