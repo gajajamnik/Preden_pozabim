@@ -5,7 +5,12 @@
             "tema": "vrste",
             "zadnji_datum": "26/09/2020",
             "naslednji_datum": "02/10/2020",
-            "ponovitve": []
+            "ponovitve": [
+                {
+                    "cas_ponovitve": "27/09/2020",
+                    "uspesnost": "4"
+                }
+            ]
         },
         {
             "predmet": "algebra",
@@ -34,6 +39,13 @@
                     "uspesnost": "4"
                 }
             ]
+        },
+        {
+            "predmet": "algebra",
+            "tema": "matrike",
+            "zadnji_datum": "05/10/2020",
+            "naslednji_datum": "06/10/2020",
+            "ponovitve": []
         }
     ]
 }
