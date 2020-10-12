@@ -16,18 +16,6 @@
                 ]
             },
             {
-                "predmet": "biologija",
-                "tema": "zuzelke",
-                "zadnji_datum": "12/10/2020",
-                "naslednji_datum": "18/10/2020",
-                "ponovitve": [
-                    {
-                        "cas_ponovitve": "12/10/2020",
-                        "uspesnost": "4"
-                    }
-                ]
-            },
-            {
                 "predmet": "matematika",
                 "tema": "ulomki",
                 "zadnji_datum": "12/10/2020",

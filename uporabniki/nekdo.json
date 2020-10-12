@@ -1,0 +1,23 @@
+{
+    "uporabnisko_ime": "nekdo",
+    "geslo": "222",
+    "zbirka": {
+        "predavanja": [
+            {
+                "predmet": "pravo",
+                "tema": "rimsko pravo",
+                "zadnji_datum": "12/10/2020",
+                "naslednji_datum": "13/10/2020",
+                "ponovitve": []
+            },
+            {
+                "predmet": "arhitektura",
+                "tema": "stavbe",
+                "zadnji_datum": "12/10/2020",
+                "naslednji_datum": "13/10/2020",
+                "ponovitve": []
+            }
+        ],
+        "ponavljanja": []
+    }
+}

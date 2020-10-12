@@ -1,0 +1,23 @@
+{
+    "uporabnisko_ime": "brigita",
+    "geslo": "sever",
+    "zbirka": {
+        "predavanja": [
+            {
+                "predmet": "rimsko pravo",
+                "tema": "rimljani",
+                "zadnji_datum": "12/10/2020",
+                "naslednji_datum": "13/10/2020",
+                "ponovitve": []
+            },
+            {
+                "predmet": "obligacijsko pravo",
+                "tema": "neki tezkega",
+                "zadnji_datum": "12/10/2020",
+                "naslednji_datum": "13/10/2020",
+                "ponovitve": []
+            }
+        ],
+        "ponavljanja": []
+    }
+}
