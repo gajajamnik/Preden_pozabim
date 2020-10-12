@@ -9,7 +9,7 @@ class Uporabnik:
         self.geslo = geslo
         self.zbirka = zbirka_predavanj
 
-    def v_slovar(self, ime_datoteke):
+    def v_slovar(self):
         return {
             'uporabnisko_ime': self.uporabnisko_ime,
             'geslo': self.geslo,
@@ -20,13 +20,15 @@ class Uporabnik:
         with open(ime_datoteke, 'w') as datoteka:
             json.dump(self.v_slovar(), datoteka, ensure_ascii=False, indent=4)
 
+
     @classmethod
-    def iz_slovarja(cls, slovar):
-        uporabnisko_ime = slovar['uporabnisko_ime']
-        geslo = slovar['geslo']
-        self = cls(uporabnisko_ime, geslo)
-        self.zbirka = ZbirkaPredavanj.iz_slovarja(slovar['zbirka'])
-        return self
+    def nalozi_stanje(cls, ime_datoteke):
+        with open(ime_datoteke) as datoteka:
+            slovar_stanja = json.load(datoteka)
+            uporabnisko_ime = slovar_stanja['uporabnisko_ime']
+            geslo = slovar_stanja['geslo']
+            zbirka = ZbirkaPredavanj.iz_slovarja(slovar_stanja['zbirka'])
+            return cls(uporabnisko_ime, geslo, zbirka)
 
     def preveri_geslo(self, geslo):
         if self.geslo != geslo:
