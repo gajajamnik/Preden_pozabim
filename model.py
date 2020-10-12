@@ -88,13 +88,16 @@ class ZbirkaPredavanj:
         for i, pred in enumerate(self.predavanja):
             if pred.predmet == predmet and pred.tema == tema:
                 predavanje_indeks = i
-        for i, pred in enumerate(self.ponavljanja):
-            if pred.predmet == predmet and pred.tema == tema:
-                ponavljanje_indeks = i
+        del self.predavanja[predavanje_indeks]
+        if self.ponavljanja != []:
+            for i, pred in enumerate(self.ponavljanja):
+                if pred.predmet == predmet and pred.tema == tema:
+                    pon_indeks = i
+            del self.ponavljanja[pon_indeks]
         #predavanje_index = next((i for i, predavanje in enumerate(self.predavanja) if predavanje.predmet == predmet and predavanje.tema == tema), None)
         #ponavljanje_index = next((i for i, predavanje in enumerate(self.ponavljanja) if predavanje.predmet == predmet and predavanje.tema == tema), None)
-        del self.predavanja[predavanje_indeks]
-        del self.ponavljanja[ponavljanje_indeks]
+        
+        
 
 
     #ce je datum ustrezen predavanje iz zbirke prestavi doda v ponavljanja
@@ -114,16 +117,16 @@ class ZbirkaPredavanj:
     def ponovi_iz_ponavljanja(self, predmet, tema, uspesnost):
         for i, pred in enumerate(self.predavanja):
             if pred.predmet == predmet and pred.tema == tema:
-                predavanje_indeks = i
+                indeks_predavanja = i
         for i, pred in enumerate(self.ponavljanja):
             if pred.predmet == predmet and pred.tema == tema:
-                ponavljanje_indeks = i
-        ponovljeno_predavanje = self.ponavljanja[ponavljanje_indeks]
+                indeks_ponavljanja = i
+        ponovljeno_predavanje = self.ponavljanja[indeks_ponavljanja]
         if 0 <= int(uspesnost) <= 5:
             ponovljeno_predavanje.ponovi_predavanje(uspesnost)
             nov_datum = ponovljeno_predavanje.naslednji_datum
-            self.ponavljanja.pop(ponavljanje_indeks)
-            self.predavanja.pop(predavanje_indeks)
+            self.ponavljanja.pop(indeks_ponavljanja)
+            self.predavanja.pop(indeks_predavanja)
             self.predavanja.append(ponovljeno_predavanje)
             return nov_datum
         else:
@@ -216,4 +219,15 @@ class Ponovi:
         self.cas_ponovitve = datetime.strptime(slovar['cas_ponovitve'], "%d/%m/%Y")
         return self
 
+zbirka = ZbirkaPredavanj()
 
+zbirka.dodaj_predavanje('analiza', 'vrste')
+zbirka.dodaj_predavanje('algebra', 'matrike')
+
+pred2 = zbirka.predavanja[1]
+pred2.zadnji_datum = date(2020, 9, 14)
+pred2.naslednji_datum = date(2020, 9, 15)
+
+zbirka.dodaj_v_ponavljanja()
+
+zbirka.odstrani_predavanje('algebra', 'matrike')
