@@ -9,9 +9,10 @@ uporabniki = {
 }
 
 zbirke = {}
-for ime_datoteke in os.listdir('shranjene_zbirke'):
-    uporabnisko_ime, koncnica = os.path.splitext(ime_datoteke)
-    zbirke[uporabnisko_ime] = ZbirkaPredavanj.nalozi_stanje(os.path.join('shranjene_zbirke', ime_datoteke))
+
+for ime_datoteke in os.listdir('uporabniki'):
+    uporabnik = Uporabnik.nalozi_stanje(os.path.join('uporabniki', ime_datoteke))
+    uporabniki[uporabnik.uporabnisko_ime] = uporabnik
 
 def trenutni_uporabnik():
     uporabnisko_ime = bottle.request.get_cookie('uporabnisko_ime')
@@ -23,9 +24,9 @@ def trenutni_uporabnik():
 def zbirka_uporabnika():
     return trenutni_uporabnik().zbirka
 
-def shrani_zbirko_uporabnika():
+def shrani_trenutnega_uporabnika():
     uporabnik = trenutni_uporabnik()
-    uporabnik.zbirka.shrani_stanje(os.path.join('shranjene_zbirke', f'{uporabnisko_ime}.json'))
+    uporabnik.shrani_stanje(os.path.join('uporabniki', f'{uporabnik.uporabnisko_ime}.json'))
 
 
 @bottle.get('/')
@@ -38,11 +39,13 @@ def prijava_get():
 
 @bottle.post('/prijava/')
 def prijava_post():
-    uporabnisko_ime = bottle.request.forms['uporabnisko_ime']
-    geslo = bottle.request.forms['geslo']
+    uporabnisko_ime = bottle.request.forms.getunicode('uporabnisko_ime')
+    geslo = bottle.request.forms.getunicode('geslo')
     uporabnik = uporabniki[uporabnisko_ime]
     uporabnik.preveri_geslo(geslo)
     bottle.response.set_cookie('uporabnisko_ime', uporabnisko_ime, path='/')
+    bottle.redirect('/')
+    
 
 @bottle.get('/preden-pozabim/')
 def home():
@@ -56,14 +59,14 @@ def dodaj():
     predmet = bottle.request.forms.getunicode('predmet')
     tema = bottle.request.forms.getunicode('tema')
     zbirka.dodaj_predavanje(predmet, tema)
-    shrani_zbirko_uporabnika()
+    shrani_trenutnega_uporabnika()
     bottle.redirect('/')
 
 @bottle.post('/pobrisi/<predmet>/<tema>/')
 def pobrisi(predmet, tema):
     zbirka = zbirka_uporabnika()
     zbirka.odstrani_predavanje(predmet, tema)
-    shrani_zbirko_uporabnika()
+    shrani_trenutnega_uporabnika()
     bottle.redirect('/')
 
 @bottle.post('/oceni/<predmet>/<tema>/')
@@ -71,7 +74,7 @@ def oceni(predmet, tema):
     zbirka = zbirka_uporabnika()
     uspesnost = bottle.request.forms['ocena']
     zbirka.ponovi_iz_ponavljanja(predmet, tema, uspesnost)
-    shrani_zbirko_uporabnika()
+    shrani_trenutnega_uporabnika()
     bottle.redirect('/')
 
 

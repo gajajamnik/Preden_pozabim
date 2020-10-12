@@ -123,7 +123,9 @@ def ponovi_predavanje(predavanje):
     print('Oceni uspešnost ponovitve od 0 do 5')
     izbira = input('> ')
     uspesnost = int(izbira)
-    nov_datum = zbirka.ponovi_iz_ponavljanja(predavanje, uspesnost)
+    indeks_predavanja = zbirka.predavanja.index(predavanje)
+    indeks_ponavljanja = zbirka.ponavljanja.index(predavanje)
+    nov_datum = zbirka.ponovi_iz_ponavljanja(indeks_predavanja, indeks_ponavljanja, uspesnost)
     dobro('Uspešno ste ponovili predavanje. Naslednji datum ponovitve je {}'.format(nov_datum))
 
 
