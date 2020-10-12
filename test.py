@@ -21,9 +21,6 @@ zbirka.dodaj_v_ponavljanja()
 
 #funkcija izracunaj_trenutni_interval dela
 
-#zbirka.ponovi_iz_ponavljanja()
+#zbirka.ponovi_iz_ponavljanja('algebra', 'matrike', 3)
 
-stanje = zbirka.v_slovar()
-
-with open('stanje.json', 'w') as datoteka:
-    json.dump(stanje, datoteka, ensure_ascii=False, indent=2)
+zbirka.odstrani_predavanje('algebra', 'matrike')
