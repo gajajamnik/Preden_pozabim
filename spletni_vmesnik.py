@@ -4,9 +4,7 @@ import random
 import os
 from model import Uporabnik, ZbirkaPredavanj, Predavanje, Ponovi
 
-uporabniki = {
-    'gaja': Uporabnik('gaja', '123', ZbirkaPredavanj())
-}
+uporabniki = {}
 
 zbirke = {}
 
@@ -31,6 +29,7 @@ def shrani_trenutnega_uporabnika():
 
 @bottle.get('/')
 def zacetna_stran():
+    shrani_trenutnega_uporabnika()
     bottle.redirect('/preden-pozabim/')
 
 @bottle.get('/prijava/')
