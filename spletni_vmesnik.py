@@ -41,11 +41,20 @@ def prijava_get():
 def prijava_post():
     uporabnisko_ime = bottle.request.forms.getunicode('uporabnisko_ime')
     geslo = bottle.request.forms.getunicode('geslo')
-    uporabnik = uporabniki[uporabnisko_ime]
-    uporabnik.preveri_geslo(geslo)
-    bottle.response.set_cookie('uporabnisko_ime', uporabnisko_ime, path='/')
+    if 'nov_racun' in bottle.request.forms and uporabnisko_ime not in uporabniki:
+        uporabnik = Uporabnik(uporabnisko_ime, geslo, ZbirkaPredavanj())
+        uporabniki[uporabnisko_ime] = uporabnik
+    else:
+        uporabnik = uporabniki[uporabnisko_ime]
+        uporabnik.preveri_geslo(geslo)
+    bottle.response.set_cookie('uporabnisko_ime', uporabnik.uporabnisko_ime, path='/')
     bottle.redirect('/')
-    
+  
+@bottle.post('/odjava/')
+def odjava():
+    bottle.response.delete_cookie('uporabnisko_ime', path='/')
+    bottle.redirect('/')
+
 
 @bottle.get('/preden-pozabim/')
 def home():
