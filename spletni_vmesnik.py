@@ -2,18 +2,19 @@ import bottle
 from datetime import *
 import random
 import os
+import hashlib
 from model import Uporabnik, ZbirkaPredavanj, Predavanje, Ponovi
 
 uporabniki = {}
 
-zbirke = {}
+skrivnost = 'TOP SECRET'
 
 for ime_datoteke in os.listdir('uporabniki'):
     uporabnik = Uporabnik.nalozi_stanje(os.path.join('uporabniki', ime_datoteke))
     uporabniki[uporabnik.uporabnisko_ime] = uporabnik
 
 def trenutni_uporabnik():
-    uporabnisko_ime = bottle.request.get_cookie('uporabnisko_ime')
+    uporabnisko_ime = bottle.request.get_cookie('uporabnisko_ime', secret=skrivnost)
     if uporabnisko_ime is None:
         bottle.redirect('/prijava/')
     return uporabniki[uporabnisko_ime]
@@ -40,13 +41,16 @@ def prijava_get():
 def prijava_post():
     uporabnisko_ime = bottle.request.forms.getunicode('uporabnisko_ime')
     geslo = bottle.request.forms.getunicode('geslo')
+    h = hashlib.blake2b()
+    h.update(geslo.encode(encoding='utf-8'))
+    zasifrirano_geslo = h.hexdigest()
     if 'nov_racun' in bottle.request.forms and uporabnisko_ime not in uporabniki:
-        uporabnik = Uporabnik(uporabnisko_ime, geslo, ZbirkaPredavanj())
+        uporabnik = Uporabnik(uporabnisko_ime, zasifrirano_geslo, ZbirkaPredavanj())
         uporabniki[uporabnisko_ime] = uporabnik
     else:
         uporabnik = uporabniki[uporabnisko_ime]
-        uporabnik.preveri_geslo(geslo)
-    bottle.response.set_cookie('uporabnisko_ime', uporabnik.uporabnisko_ime, path='/')
+        uporabnik.preveri_geslo(zasifrirano_geslo)
+    bottle.response.set_cookie('uporabnisko_ime', uporabnik.uporabnisko_ime, path='/', secret=skrivnost)
     bottle.redirect('/')
   
 @bottle.post('/odjava/')
