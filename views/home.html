@@ -2,21 +2,23 @@
 <div class="container">
     <div class="row top-buffer">
         <div class="col-lg-12">
-            <h3>Predavanja</h3>
+            <h4 class="display-4">Predavanja</h4>
         </div>
     </div>
 </div>
 <div class="container">
     <div class="row top-buffer">
-        <table class="col-lg-12">
-            <tbody>
+        <table class="table">
+            <thead style="background-color: #dbc5b6; opacity: 0.8;">
                 <tr>
-                    <th>Predmet</th>
-                    <th>Poglavje</th>
-                    <th>Datum izvedbe</th>
-                    <th>Datum ponovitve</th>
-                    <th></th>
+                  <th scope="col">Predmet</th>
+                  <th scope="col">Poglavje</th>
+                  <th scope="col">Datum zadnje ponovitve</th>
+                  <th scope="col">Datum naslednje ponovitve</th>
+                  <th scope="col"></th>
                 </tr>
+            </thead>
+            <tbody>
             % for predavanje in zbirka.predavanja:
                 <tr>
                     <td>{{predavanje.predmet}}</td>
@@ -24,17 +26,17 @@
                     <td>{{predavanje.zadnji_datum}}</td>
                     <td>{{predavanje.naslednji_datum}}</td>
                     <form action="/pobrisi/{{predavanje.predmet}}/{{predavanje.tema}}/" method="POST" id="brisi-form">
-                    <td style="text-align: center"><button class="btn btn-outline-danger" type="submit" name="brisi" id="brisi">Pobrisi</button></td>
+                    <td style="text-align: center"><button class="btn btn-outline-danger" type="submit" name="brisi" id="brisi"><b>Pobrisi</b></button></td>
                     </form>
                 </tr> 
             % end
                 <form action="/dodaj/" method="POST" id="dodaj-form">
                 <tr>
-                    <td><input type="text" name="predmet" id="predmet" placeholder="Predmet"></td>
-                    <td><input type="text" name="tema" id="tema" placeholder="Tema"></td>
+                    <td><input type="text" class="form-control" name="predmet" id="predmet" placeholder="Predmet"></td>
+                    <td><input type="text" class="form-control" name="tema" id="tema" placeholder="Tema"></td>
                     <td></td>
                     <td></td>
-                    <td style="text-align: center"><button class="btn btn-outline-success" type="submit" name="dodaj" id="dodaj">Dodaj</button></td>
+                    <td style="text-align: center"><button class="btn btn-outline-success" type="submit" name="dodaj" id="dodaj"><b>Dodaj</b></button></td>
                 </tr>
 
             </tbody>
@@ -44,22 +46,41 @@
 <div class="container">
     <div class="row top-buffer">
         <div class="col-lg-12">
-            <h3>Ponovitve</h3>
+            <h4 class="display-4">Ponovitve
+                <button type="button" 
+                class="btn btn-outline-dark" 
+                data-container="body"
+                data-trigger="focus" 
+                data-toggle="popover" 
+                data-placement="right"
+                data-html="true"
+                data-content="<ul>
+                    <li>5 = spomnim se vseh definicij in primerov, jih povezujem in razumem</li>
+                    <li>4 = spomnim se vecino definicij in primerov, za njihovo razlago potrebujem pomoč knjige</li>
+                    <li>3 = imam težave že pri določenih definicijah, vendar znam povzeti bistvo s svojimi besedami</li>
+                    <li>2 = težave imam tako pri definicijah kot pri razumevanju snovi v celoti</li>
+                    <li>1 = ne spomnim se skoraj ničesar</li></ul>">
+                    <b>Lestvica uspešnosti ponovitev</b>
+                </button>
+            </h4>
         </div>
     </div>
 </div>
 <div class="container">
     <div class="row top-buffer">
-        <table class="col-lg-12">
-            <tbody>
+        <table class="table">
+            <thead style="background-color: #dbc5b6; opacity: 0.8;">
                 <tr>
-                    <th>Predmet</th>
-                    <th>Poglavje</th>
-                    <th style="text-align: center">Stevilo ponovitev</th>
-                    <th style="text-align: center">Uspesnost</th>
-                    <th></th>
+                  <th scope="col">Predmet</th>
+                  <th scope="col">Poglavje</th>
+                  <th scope="col">Stevilo ponovitev</th>
+                  <th scope="col">Uspesnost</th>
+                  <th scope="col"></th>
                 </tr>
-            % for predavanje in zbirka.ponavljanja:
+            </thead>
+            <tbody>
+            % for predavanje in zbirka.predavanja:
+               %if predavanje.ponovi == True:
                 <tr>
                     <td>{{predavanje.predmet}}</td>
                     <td>{{predavanje.tema}}</td>
@@ -73,10 +94,11 @@
                         <input style="height:14px; width:14px; margin: 3px 2px 5px 10px" type="radio" name="ocena" id="ocena5" value="5">5</input>
                     </td>
                     <td style="text-align: center">
-                        <button class="btn btn-outline-secondary" type="submit" name="oceni" id="oceni">Oceni</button>
+                        <button class="btn btn-outline-dark" type="submit" name="oceni" id="oceni"><b>Oceni</b></button>
                     </td>
                     </form>
                 </tr>
+                %end
             %end
             </tbody>
         </table>
