@@ -40,12 +40,10 @@ class Uporabnik:
 class ZbirkaPredavanj:
     def __init__(self):
         self.predavanja = []
-        self.ponavljanja = []
 
     def v_slovar(self):
         return {
             'predavanja': [predavanje.v_slovar() for predavanje in self.predavanja],
-            'ponavljanja': [predavanje.v_slovar() for predavanje in self.ponavljanja]
         }
 
     def shrani_stanje(self, ime_datoteke):
@@ -57,8 +55,6 @@ class ZbirkaPredavanj:
         self = cls()
         for predavanje in slovar['predavanja']:
             self.predavanja.append(Predavanje.iz_slovarja(predavanje))
-        for ponavljanje in slovar['ponavljanja']:
-            self.ponavljanja.append(Predavanje.iz_slovarja(ponavljanje))
         return self
 
     @classmethod
@@ -89,48 +85,28 @@ class ZbirkaPredavanj:
             if pred.predmet == predmet and pred.tema == tema:
                 predavanje_indeks = i
         del self.predavanja[predavanje_indeks]
-        if self.ponavljanja != []:
-            for i, pred in enumerate(self.ponavljanja):
-                if pred.predmet == predmet and pred.tema == tema:
-                    pon_indeks = i
-            del self.ponavljanja[pon_indeks]
-        #predavanje_index = next((i for i, predavanje in enumerate(self.predavanja) if predavanje.predmet == predmet and predavanje.tema == tema), None)
-        #ponavljanje_index = next((i for i, predavanje in enumerate(self.ponavljanja) if predavanje.predmet == predmet and predavanje.tema == tema), None)
         
-        
-
-
-    #ce je datum ustrezen predavanje iz zbirke prestavi doda v ponavljanja
+    #ce je datum ustrezen spremeni atribut ponovi za predavanje iz zbirke
     def dodaj_v_ponavljanja(self):
         danes = date.today()
-        changes = False
         vsa_predavanja = self.predavanja
         for predavanje in vsa_predavanja:
             if danes >= predavanje.naslednji_datum:
-                if not any(predavanje.v_slovar() == ponavljanje.v_slovar() for ponavljanje in self.ponavljanja):
-                    self.ponavljanja.append(predavanje)
-                    changes = True
-        return changes
+                predavanje.ponovi = True   #atribut za ponavljanje nastavis na True
+        
 
-    #iz seznama ponavljanja izbere(INDEKS) predavanje, na njem opravi ponovitev in ga odstrani iz seznama ponavljanja
+    #glede na izbrano kombinacijo predmet, tema(kombinacija je enolicna) poisce ustrezno predavanje in na njem opravi ponovitev(na podlagi sprejete uspesnosti)
     #funkcija vraca nov datum ponavljanja
     def ponovi_iz_ponavljanja(self, predmet, tema, uspesnost):
-        for i, pred in enumerate(self.predavanja):
+        for pred in self.predavanja:
             if pred.predmet == predmet and pred.tema == tema:
-                indeks_predavanja = i
-        for i, pred in enumerate(self.ponavljanja):
-            if pred.predmet == predmet and pred.tema == tema:
-                indeks_ponavljanja = i
-        ponovljeno_predavanje = self.ponavljanja[indeks_ponavljanja]
-        if 0 <= int(uspesnost) <= 5:
-            ponovljeno_predavanje.ponovi_predavanje(uspesnost)
-            nov_datum = ponovljeno_predavanje.naslednji_datum
-            self.ponavljanja.pop(indeks_ponavljanja)
-            self.predavanja.pop(indeks_predavanja)
-            self.predavanja.append(ponovljeno_predavanje)
-            return nov_datum
-        else:
-            raise ValueError('Uspesnost mora biti podana s stevilko med 0 in 5.')
+                #preveris da je vnesena uspesnost ustrezna
+                if 0 <= int(uspesnost) <= 5:
+                    pred.ponovi_predavanje(uspesnost)
+                    nov_datum = pred.naslednji_datum
+                    return nov_datum
+                else:
+                    raise ValueError('Uspesnost mora biti podana s stevilko med 0 in 5.')
 
     
 
@@ -157,6 +133,7 @@ class Predavanje:
         self.tema = tema
         self.zadnji_datum = None  #ob vpisu predavanja se ta datum nastavi na dan vnosa
         self.naslednji_datum = None #ob vpisu predavanja se to nastavi na en dan po vnosu
+        self.ponovi = False 
         self.ponovitve = []
 
     def v_slovar(self):
@@ -188,9 +165,8 @@ class Predavanje:
         razlika_v_dnevih = razlika.days
         return razlika_v_dnevih
 
-
     def ponovi_predavanje(self, uspesnost):
-        #doda ponovitev v seznam ponovitev
+        #doda ponovitev v seznam ponovitev predavanja
         self.ponovitve.append(Ponovi(uspesnost))
         #izracuna novi interval
         trenutni_interval = self.izracunaj_trenutni_interval()
@@ -204,6 +180,8 @@ class Predavanje:
         leto = datum_dodajanja.year
         self.zadnji_datum = date(leto, mesec, dan)
         self.naslednji_datum = self.zadnji_datum + timedelta(days=interval)
+        #atribut ponovi nastavi ponovno na False
+        self.ponovi = False
         
 
 #ob vsaki ponovitvi dodamo uspenost ponovitve po lestvici 0-5
@@ -218,16 +196,3 @@ class Ponovi:
         self = cls(uspesnost)
         self.cas_ponovitve = datetime.strptime(slovar['cas_ponovitve'], "%d/%m/%Y")
         return self
-
-zbirka = ZbirkaPredavanj()
-
-zbirka.dodaj_predavanje('analiza', 'vrste')
-zbirka.dodaj_predavanje('algebra', 'matrike')
-
-pred2 = zbirka.predavanja[1]
-pred2.zadnji_datum = date(2020, 9, 14)
-pred2.naslednji_datum = date(2020, 9, 15)
-
-zbirka.dodaj_v_ponavljanja()
-
-zbirka.odstrani_predavanje('algebra', 'matrike')
