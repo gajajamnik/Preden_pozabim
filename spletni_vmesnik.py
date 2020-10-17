@@ -31,7 +31,7 @@ def shrani_trenutnega_uporabnika():
 @bottle.get('/')
 def zacetna_stran():
     shrani_trenutnega_uporabnika()
-    bottle.redirect('/preden-pozabim/')
+    bottle.redirect('/zbirka/')
 
 @bottle.get('/prijava/')
 def prijava_get():
@@ -59,11 +59,11 @@ def odjava():
     bottle.redirect('/')
 
 
-@bottle.get('/preden-pozabim/')
+@bottle.get('/zbirka/')
 def home():
     zbirka = zbirka_uporabnika()
     zbirka.dodaj_v_ponavljanja()  #vsakic posodobi ponovitve glede na dansnji datum
-    return bottle.template('home.html', zbirka=zbirka)
+    return bottle.template('zbirka.html', zbirka=zbirka)
 
 @bottle.post('/dodaj/')
 def dodaj():
@@ -88,6 +88,10 @@ def oceni(predmet, tema):
     zbirka.ponovi_iz_ponavljanja(predmet, tema, uspesnost)
     shrani_trenutnega_uporabnika()
     bottle.redirect('/')
+
+@bottle.get('/program/')
+def program():
+    return bottle.template('program.html')
 
 @bottle.get('/static/<filename>')
 def static_file(filename):
