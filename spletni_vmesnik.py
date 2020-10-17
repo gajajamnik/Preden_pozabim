@@ -62,7 +62,7 @@ def odjava():
 @bottle.get('/preden-pozabim/')
 def home():
     zbirka = zbirka_uporabnika()
-    zbirka.dodaj_v_ponavljanja()
+    zbirka.dodaj_v_ponavljanja()  #vsakic posodobi ponovitve glede na dansnji datum
     return bottle.template('home.html', zbirka=zbirka)
 
 @bottle.post('/dodaj/')
@@ -89,5 +89,8 @@ def oceni(predmet, tema):
     shrani_trenutnega_uporabnika()
     bottle.redirect('/')
 
+@bottle.get('/static/<filename>')
+def static_file(filename):
+    return bottle.static_file(filename, root='./static')
 
 bottle.run(debug=True, reloader=True)
