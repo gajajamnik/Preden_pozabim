@@ -6,9 +6,21 @@
             {
                 "predmet": "pozarna varnost",
                 "tema": "zasilni izhodi",
-                "zadnji_datum": "17/10/2020",
-                "naslednji_datum": "18/10/2020",
+                "zadnji_datum": "16/10/2020",
+                "naslednji_datum": "17/10/2020",
                 "ponovitve": []
+            },
+            {
+                "predmet": "varstvo pri delu",
+                "tema": "nacrti",
+                "zadnji_datum": "18/10/2020",
+                "naslednji_datum": "24/10/2020",
+                "ponovitve": [
+                    {
+                        "cas_ponovitve": "18/10/2020",
+                        "uspesnost": "5"
+                    }
+                ]
             }
         ]
     }

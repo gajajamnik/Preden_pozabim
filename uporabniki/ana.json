@@ -11,18 +11,6 @@
                 "ponovitve": []
             },
             {
-                "predmet": "statika",
-                "tema": "sile",
-                "zadnji_datum": "17/10/2020",
-                "naslednji_datum": "23/10/2020",
-                "ponovitve": [
-                    {
-                        "cas_ponovitve": "17/10/2020",
-                        "uspesnost": "3"
-                    }
-                ]
-            },
-            {
                 "predmet": "materiali",
                 "tema": "beton",
                 "zadnji_datum": "17/10/2020",
