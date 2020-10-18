@@ -93,6 +93,10 @@ def oceni(predmet, tema):
 def program():
     return bottle.template('program.html')
 
+@bottle.get('/navodila/')
+def navodila():
+    return bottle.template('navodila.html')
+
 @bottle.get('/static/<filename>')
 def static_file(filename):
     return bottle.static_file(filename, root='./static')

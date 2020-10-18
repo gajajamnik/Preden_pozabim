@@ -1,10 +1,12 @@
 % zavihki = [
 %       'zbirka',
-%       'program'
+%       'program',
+%       'navodila'
 % ]
 % oznaka_zavihka = {
 %       'zbirka': 'Zbirka predavanj',
-%       'program': 'O programu'
+%       'program': 'O programu',
+%       'navodila': 'Navodila'
 % }
 
 <!doctype html>
@@ -34,7 +36,7 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg" style="background-color: #dbc5b6;">
-      <a class="nav-link disabled" href="#" style="color: black; font-size: large; font-weight: bold;">
+      <a class="nav-link disabled mr-auto" href="#" style="color: black; font-size: large; font-weight: bold;">
         <img src="/static/Black-pig-pen-pp-logo.png" width="70" height="40" class="d-inline-block align-top" alt="" style="margin-top: -6px">
       Preden Pozabim
       </a>
@@ -43,7 +45,7 @@
           % if zavihek == izbrani_zavihek:
       <a class="nav-link active mr-auto" href="/{{zavihek}}/" style="color: black;">{{oznaka_zavihka[zavihek]}}</a>
           %else:
-      <a class="nav-link margin-right" href="/{{zavihek}}/" style="color: black; margin-right: 24cm;">{{oznaka_zavihka[zavihek]}}</a>
+      <a class="nav-link mr-auto" href="/{{zavihek}}/" style="color: black;">{{oznaka_zavihka[zavihek]}}</a>
           %end
         %end
       %end
