@@ -84,7 +84,7 @@ def pobrisi(predmet, tema):
 @bottle.post('/oceni/<predmet>/<tema>/')
 def oceni(predmet, tema):
     zbirka = zbirka_uporabnika()
-    uspesnost = bottle.request.forms['ocena']
+    uspesnost = int(bottle.request.forms['ocena'])
     zbirka.ponovi_iz_ponavljanja(predmet, tema, uspesnost)
     shrani_trenutnega_uporabnika()
     bottle.redirect('/')
