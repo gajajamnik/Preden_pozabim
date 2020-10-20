@@ -12,5 +12,5 @@
 - dnevno preverite ali imate tistega dne kakšno predavanje za ponoviti
 
 Natančnejša navodila za uporabo in opis programa se nahajajo v programu samem.
-
+------
 (za testiranje delovanja programa lahko uporabite shranjenega uporabnika - uporabnisko ime: test, geslo: 123)
