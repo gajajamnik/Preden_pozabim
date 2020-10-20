@@ -1,4 +1,5 @@
 import bottle
+from bottle import error
 from datetime import *
 import random
 import os
@@ -70,8 +71,19 @@ def dodaj():
     zbirka = zbirka_uporabnika()
     predmet = bottle.request.forms.getunicode('predmet')
     tema = bottle.request.forms.getunicode('tema')
+    for predavanje in zbirka.predavanja:
+            if predavanje.predmet == predmet and predavanje.tema == tema:
+                bottle.redirect('/ze-obstaja/')
     zbirka.dodaj_predavanje(predmet, tema)
     shrani_trenutnega_uporabnika()
+    bottle.redirect('/')
+
+@bottle.get('/ze-obstaja/')
+def ze_obstaja():
+    return bottle.template('ze_obstaja.html')
+
+@bottle.post('/ze-obstaja/')
+def ze_obstaja_post():
     bottle.redirect('/')
 
 @bottle.post('/pobrisi/<predmet>/<tema>/')
@@ -100,5 +112,11 @@ def navodila():
 @bottle.get('/static/<filename>')
 def static_file(filename):
     return bottle.static_file(filename, root='./static')
+
+@error(500)
+def error500(e):
+   return bottle.template('error.html')
+
+
 
 bottle.run(debug=True, reloader=True)
