@@ -1,0 +1,45 @@
+{
+    "uporabnisko_ime": "test",
+    "zasifrirano_geslo": "e64cb91c7c1819bdcda4dca47a2aae98e737df75ddb0287083229dc0695064616df676a0c95ae55109fe0a27ba9dee79ea9a5c9d90cceb0cf8ae80b4f61ab4a3",
+    "zbirka": {
+        "predavanja": [
+            {
+                "predmet": "analiza",
+                "tema": "vrste",
+                "zadnji_datum": "7/10/2020",
+                "naslednji_datum": "20/10/2020",
+                "ponovitve": [
+                    {
+                        "cas_ponovitve": "01/10/2020",
+                        "uspesnost": 4
+                    },
+                    {
+                        "cas_ponovitve": "07/10/2020",
+                        "uspesnost": 2
+                    }
+                ]
+            },
+            {
+                "predmet": "algebra",
+                "tema": "generatorji",
+                "zadnji_datum": "20/10/2020",
+                "naslednji_datum": "21/10/2020",
+                "ponovitve": []
+            },
+            {
+                "predmet": "splosna topologija",
+                "tema": "topoloski prostori",
+                "zadnji_datum": "3/10/2020",
+                "naslednji_datum": "4/10/2020",
+                "ponovitve": []
+            },
+            {
+                "predmet": "programiranje 1",
+                "tema": "regularni izrazi",
+                "zadnji_datum": "20/10/2020",
+                "naslednji_datum": "21/10/2020",
+                "ponovitve": []
+            }
+        ]
+    }
+}
