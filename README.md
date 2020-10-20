@@ -1,5 +1,5 @@
 # Preden_pozabim
-Preden Pozabim je program namenjen študentom, ki se na svoji akademski poti spopadajo z na videz neobvladljivimi količinami snovi. Program je namenjen kot spodbuda k sprotnem ponavljanju snovi, ki jih študenti jemljejo na predavanjih, tako da s pomočjo krivulje pozabljanja izračuna kdaj je katero snov najbolje ponoviti.
+**Preden Pozabim** je program namenjen študentom, ki se na svoji akademski poti spopadajo z na videz neobvladljivimi količinami snovi. Program je namenjen kot spodbuda k sprotnem ponavljanju snovi, ki jo študenti jemljejo na predavanjih, tako da s pomočjo **krivulje pozabljanja** izračuna kdaj je katero snov najbolje ponoviti.
 
 ## Zagon programa
 - klonirajte celoten repozitorij
@@ -12,3 +12,5 @@ Preden Pozabim je program namenjen študentom, ki se na svoji akademski poti spo
 - dnevno preverite ali imate tistega dne kakšno predavanje za ponoviti
 
 Natančnejša navodila za uporabo in opis programa se nahajajo v programu samem.
+
+(za testiranje delovanja programa lahko uporabite shranjenega uporabnika - uporabnisko ime: test, geslo: 123)
