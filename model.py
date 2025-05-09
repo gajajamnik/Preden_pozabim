@@ -66,11 +66,12 @@ class ZbirkaPredavanj:
     #ob vnosu predavanje doda v zbirko
     def dodaj_predavanje(self, predmet, tema):
         datum_dodajanja = date.today()
+        #shranimo podatke o datumu dodajanja v spremenljivke
         dan = datum_dodajanja.day
         mesec = datum_dodajanja.month
         leto = datum_dodajanja.year
         novo_predavanje = Predavanje(predmet, tema)
-        #nastavi zadnji in naslednji datum
+        #nastavi zadnji in naslednji datum(prvi interval med datumoma bo vedno 1)
         novo_predavanje.zadnji_datum = date(leto, mesec, dan)
         novo_predavanje.naslednji_datum = date(leto, mesec, dan) + timedelta(days=1)
         #doda predavanje v zbirko in preveri da predavanja z takim imenom(kombinacija predmeta in teme) še ni v zbirki
